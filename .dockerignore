@@ -1,0 +1,9 @@
+# nada de esto hace falta para construir la imagen
+.git
+.gitignore
+.idea
+build
+.gradle
+*.md
+Dockerfile
+.dockerignore
