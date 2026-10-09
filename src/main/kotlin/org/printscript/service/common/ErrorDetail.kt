@@ -1,6 +1,9 @@
 package org.printscript.service.common
 
+import printscript.common.Position
 import printscript.runner.ExecutionResult
+import printscript.runner.FormatResult
+import printscript.runner.LintResult
 
 // lo comparten los cuatro endpoints: una posicion de PrintScript es (linea, columna),
 // y un error tiene dos, donde empieza y donde termina
@@ -12,9 +15,19 @@ data class ErrorDetail(
 	val endColumn: Int,
 )
 
-// unico traductor de un error de PrintScript al JSON que ve el usuario.
-// start y end pueden ser null, y entonces no hay posicion que mostrar.
-fun ExecutionResult.Failure.toErrorDetail(): ErrorDetail =
+// el Engine devuelve un Failure distinto por operacion, los tres con la misma forma
+fun ExecutionResult.Failure.toErrorDetail(): ErrorDetail = errorDetail(message, start, end)
+
+fun LintResult.Failure.toErrorDetail(): ErrorDetail = errorDetail(message, start, end)
+
+fun FormatResult.Failure.toErrorDetail(): ErrorDetail = errorDetail(message, start, end)
+
+// start y end pueden ser null, y entonces no hay posicion que mostrar
+private fun errorDetail(
+	message: String,
+	start: Position?,
+	end: Position?,
+): ErrorDetail =
 	ErrorDetail(
 		message = message,
 		line = start?.line ?: 0,
