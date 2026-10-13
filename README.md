@@ -82,7 +82,7 @@ Levanta en el puerto **8080**. Para ver que está arriba: `GET http://localhost:
 ./gradlew check
 ```
 
-Corre ktlint, detekt y los tests. Es lo mismo que corre el CI en cada PR contra `main` o `dev`.
+Corre ktlint, detekt y los tests. Es lo mismo que corre el CI en cada PR contra `dev` o `prod`.
 
 ## Docker
 
@@ -103,6 +103,20 @@ queda en el historial de la terminal.
 El `Dockerfile` es multi-stage: la etapa que compila tiene el JDK, el código y el token, y
 se descarta entera. **La imagen final solo lleva el JRE y el jar**, sin el token ni el
 código fuente.
+
+## Publicación de la imagen
+
+Cada merge a `dev` o a `prod` construye la imagen y la sube a
+`ghcr.io/ingsis-printscript-grupo3/printscript-service` con dos tags:
+
+| Tag | Qué es |
+| --- | --- |
+| `dev` o `prod` | La última imagen de esa rama. Se pisa en cada merge |
+| el hash del commit | Esa imagen exacta. No cambia nunca, sirve para volver atrás |
+
+```bash
+docker pull ghcr.io/ingsis-printscript-grupo3/printscript-service:dev
+```
 
 ## En el sistema entero
 
