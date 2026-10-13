@@ -1,9 +1,9 @@
 package org.printscript.service.format
 
 import org.printscript.service.common.DiscardOutput
+import org.printscript.service.common.resolveVersion
 import org.printscript.service.common.toErrorDetail
 import org.springframework.stereotype.Service
-import printscript.common.LanguageVersion
 import printscript.formatter.Formatter
 import printscript.formatter.FormatterRules
 import printscript.formatter.FormatterRulesLoader
@@ -17,7 +17,7 @@ import java.io.StringWriter
 @Service
 class FormattingService {
     fun format(request: FormatRequest): FormatResponse {
-        val version = LanguageVersion.parse(request.version)
+        val version = resolveVersion(request.language, request.version)
         val rules = request.rules?.let { FormatterRulesLoader.fromJson(it.toString()) } ?: FormatterRules()
         val formatted = StringWriter()
         val engine = Engine(DiscardOutput, QueueInput(), MapEnvProvider())

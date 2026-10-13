@@ -59,4 +59,11 @@ class ExecuteControllerTest(
             .postJson("/executions", """{"language":"printscript","version":"9.9","content":"println(1);"}""")
             .andExpect { status { isBadRequest() } }
     }
+
+    @Test
+    fun `an unsupported language returns 400`() {
+        mockMvc
+            .postJson("/executions", """{"language":"python","version":"1.0","content":"println(1);"}""")
+            .andExpect { status { isBadRequest() } }
+    }
 }

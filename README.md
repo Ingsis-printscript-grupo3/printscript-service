@@ -18,7 +18,7 @@ obligatorios en los cuatro.
 | Path | Campos extra | Qué hace |
 | --- | --- | --- |
 | `/validations` | — | Dice si el snippet cumple las reglas del lenguaje (US1 a US4) |
-| `/executions` | `inputs` | Lo ejecuta y devuelve lo que imprimió (US8, US9, US16) |
+| `/executions` | `inputs` | Lo ejecuta y devuelve lo que imprimió (US8, US16) |
 | `/lintings` | `rules` | Devuelve las reglas de estilo que no cumple (US5, US14, US15) |
 | `/formattings` | `rules` | Devuelve el snippet formateado (US11, US12, US13) |
 
@@ -55,8 +55,18 @@ llama puede distinguir *"el snippet está mal"* de *"el servicio no anda"*.
 | --- | --- | --- |
 | `200` | El pedido es válido, aunque el snippet esté mal | la respuesta del endpoint |
 | `400` | La versión del lenguaje no existe | `{"error": "Unsupported PrintScript version: 9.9"}` |
+| `400` | El lenguaje no está soportado | `{"error": "Unsupported language: python"}` |
 
-Versiones soportadas: `1.0` y `1.1`.
+Lenguaje soportado: `printscript`. Versiones soportadas: `1.0` y `1.1`.
+
+### Historias pendientes
+
+La cátedra las deja para más adelante, y hoy el servicio no las resuelve:
+
+- **US9 y US10**: `/executions` recibe todos los inputs juntos y devuelve los outputs al
+  final. No muestra el output a medida que se evalúa ni pide los inputs de a uno.
+- **US12 y US15**: formatear o lintear todos los snippets sin hacer esperar al
+  administrador necesita una cola con un worker, no un request HTTP.
 
 ## Correrlo
 
@@ -72,7 +82,7 @@ Levanta en el puerto **8080**. Para ver que está arriba: `GET http://localhost:
 ./gradlew check
 ```
 
-Corre ktlint, detekt y los tests. Es lo mismo que corre el CI en cada PR contra `main` o `dev`.
+Corre ktlint, detekt y los tests. Es lo mismo que corre el CI en cada PR contra `dev` o `prod`.
 
 ## Docker
 
@@ -93,6 +103,20 @@ queda en el historial de la terminal.
 El `Dockerfile` es multi-stage: la etapa que compila tiene el JDK, el código y el token, y
 se descarta entera. **La imagen final solo lleva el JRE y el jar**, sin el token ni el
 código fuente.
+
+## Publicación de la imagen
+
+Cada merge a `dev` o a `prod` construye la imagen y la sube a
+`ghcr.io/ingsis-printscript-grupo3/printscript-service` con dos tags:
+
+| Tag | Qué es |
+| --- | --- |
+| `dev` o `prod` | La última imagen de esa rama. Se pisa en cada merge |
+| el hash del commit | Esa imagen exacta. No cambia nunca, sirve para volver atrás |
+
+```bash
+docker pull ghcr.io/ingsis-printscript-grupo3/printscript-service:dev
+```
 
 ## En el sistema entero
 
