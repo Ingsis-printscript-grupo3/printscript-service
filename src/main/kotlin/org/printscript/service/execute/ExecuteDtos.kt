@@ -7,14 +7,14 @@ import org.printscript.service.common.ErrorDetail
 // no puede leerse las variables de entorno del contenedor.
 
 data class ExecuteRequest(
-	val language: String,
-	val version: String,
-	val content: String,
-	val inputs: List<String> = emptyList(),
+    val language: String,
+    val version: String,
+    val content: String,
+    val inputs: List<String> = emptyList(),
 )
 
 // outputs trae lo que alcanzo a imprimirse, aunque despues haya fallado
 data class ExecuteResponse(
-	val outputs: List<String>,
-	val errors: List<ErrorDetail>,
+    val outputs: List<String>,
+    val errors: List<ErrorDetail>,
 )

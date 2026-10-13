@@ -5,9 +5,11 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class LintController(private val linting: LintingService) {
-	@PostMapping("/lintings")
-	fun lint(
-		@RequestBody request: LintRequest,
-	): LintResponse = linting.lint(request)
+class LintController(
+    private val linting: LintingService,
+) {
+    @PostMapping("/lintings")
+    fun lint(
+        @RequestBody request: LintRequest,
+    ): LintResponse = linting.lint(request)
 }

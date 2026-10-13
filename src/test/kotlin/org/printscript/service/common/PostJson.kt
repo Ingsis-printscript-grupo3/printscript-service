@@ -7,10 +7,10 @@ import org.springframework.test.web.servlet.post
 
 // los cuatro endpoints son POST con un body JSON
 fun MockMvc.postJson(
-	path: String,
-	body: String,
+    path: String,
+    body: String,
 ): ResultActionsDsl =
-	post(path) {
-		contentType = MediaType.APPLICATION_JSON
-		content = body
-	}
+    post(path) {
+        contentType = MediaType.APPLICATION_JSON
+        content = body
+    }
