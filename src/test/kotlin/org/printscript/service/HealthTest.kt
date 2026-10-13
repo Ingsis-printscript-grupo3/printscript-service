@@ -10,15 +10,15 @@ import org.springframework.test.web.servlet.get
 @SpringBootTest
 @AutoConfigureMockMvc
 class HealthTest(
-	@Autowired private val mockMvc: MockMvc,
+    @Autowired private val mockMvc: MockMvc,
 ) {
-	@Test
-	fun `health reports the service is up`() {
-		mockMvc
-			.get("/actuator/health")
-			.andExpect {
-				status { isOk() }
-				jsonPath("$.status") { value("UP") }
-			}
-	}
+    @Test
+    fun `health reports the service is up`() {
+        mockMvc
+            .get("/actuator/health")
+            .andExpect {
+                status { isOk() }
+                jsonPath("$.status") { value("UP") }
+            }
+    }
 }
