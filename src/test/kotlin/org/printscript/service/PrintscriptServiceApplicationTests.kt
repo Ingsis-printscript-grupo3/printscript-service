@@ -7,5 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest
 class PrintscriptServiceApplicationTests {
     @Test
     fun contextLoads() {
+        // pasa si el contexto de Spring levanta
     }
 }

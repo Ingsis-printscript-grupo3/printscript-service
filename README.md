@@ -72,7 +72,7 @@ Levanta en el puerto **8080**. Para ver que está arriba: `GET http://localhost:
 ./gradlew check
 ```
 
-Corre ktlint y los tests. Es lo mismo que corre el CI en cada PR contra `main` o `dev`.
+Corre ktlint, detekt y los tests. Es lo mismo que corre el CI en cada PR contra `main` o `dev`.
 
 ## Docker
 
