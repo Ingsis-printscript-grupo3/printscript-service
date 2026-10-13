@@ -58,4 +58,14 @@ class ValidateControllerTest(
                 jsonPath("$.error") { value("Unsupported PrintScript version: 9.9") }
             }
     }
+
+    @Test
+    fun `an unsupported language returns 400`() {
+        mockMvc
+            .postJson("/validations", """{"language":"python","version":"1.0","content":"let x: number = 1;"}""")
+            .andExpect {
+                status { isBadRequest() }
+                jsonPath("$.error") { value("Unsupported language: python") }
+            }
+    }
 }

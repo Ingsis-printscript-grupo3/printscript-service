@@ -61,4 +61,11 @@ class LintControllerTest(
             .postJson("/lintings", body)
             .andExpect { status { isBadRequest() } }
     }
+
+    @Test
+    fun `an unsupported language returns 400`() {
+        mockMvc
+            .postJson("/lintings", """{"language":"python","version":"1.0","content":"let x: number = 1;"}""")
+            .andExpect { status { isBadRequest() } }
+    }
 }

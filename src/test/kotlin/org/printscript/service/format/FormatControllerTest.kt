@@ -68,4 +68,11 @@ class FormatControllerTest(
             .postJson("/formattings", body)
             .andExpect { status { isBadRequest() } }
     }
+
+    @Test
+    fun `an unsupported language returns 400`() {
+        mockMvc
+            .postJson("/formattings", """{"language":"python","version":"1.0","content":"$UNFORMATTED_SNIPPET"}""")
+            .andExpect { status { isBadRequest() } }
+    }
 }
