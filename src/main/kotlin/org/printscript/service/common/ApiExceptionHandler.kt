@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 // y una version invalida les daria 500 en vez de 400.
 @RestControllerAdvice
 class ApiExceptionHandler {
-    // una version o una regla que no existe es un error de protocolo: el cliente pidio algo imposible
+    // un lenguaje, una version o una regla que no existe es un error de protocolo: el cliente pidio algo imposible
     @ExceptionHandler(IllegalArgumentException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     fun badRequest(error: IllegalArgumentException): Map<String, String> =

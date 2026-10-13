@@ -1,9 +1,9 @@
 package org.printscript.service.lint
 
 import org.printscript.service.common.DiscardOutput
+import org.printscript.service.common.resolveVersion
 import org.printscript.service.common.toErrorDetail
 import org.springframework.stereotype.Service
-import printscript.common.LanguageVersion
 import printscript.interpreter.env.MapEnvProvider
 import printscript.interpreter.input.QueueInput
 import printscript.linter.LinterFactory
@@ -14,7 +14,7 @@ import java.io.StringReader
 @Service
 class LintingService {
     fun lint(request: LintRequest): LintResponse {
-        val version = LanguageVersion.parse(request.version)
+        val version = resolveVersion(request.language, request.version)
         val linter =
             request.rules?.let { LinterFactory.fromJson(it.toString(), version) }
                 ?: LinterFactory.create(version)
