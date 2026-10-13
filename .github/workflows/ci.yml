@@ -26,8 +26,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      # el build.gradle.kts cae a estas variables cuando no hay gradle.properties,
-      # que es justo lo que pasa aca
+      # no hay gradle.properties asiq build.gradle.kts cae a estas variables
       - name: Run checks
         run: ./gradlew check
         env:

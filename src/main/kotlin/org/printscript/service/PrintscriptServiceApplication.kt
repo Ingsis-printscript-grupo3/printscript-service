@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class PrintscriptServiceApplication
 
 fun main(args: Array<String>) {
-	runApplication<PrintscriptServiceApplication>(*args)
+    runApplication<PrintscriptServiceApplication>(*args)
 }

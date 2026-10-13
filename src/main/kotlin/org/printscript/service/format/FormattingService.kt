@@ -16,19 +16,19 @@ import java.io.StringWriter
 
 @Service
 class FormattingService {
-	fun format(request: FormatRequest): FormatResponse {
-		val version = LanguageVersion.parse(request.version)
-		val rules = request.rules?.let { FormatterRulesLoader.fromJson(it.toString()) } ?: FormatterRules()
-		val formatted = StringWriter()
-		val engine = Engine(DiscardOutput, QueueInput(), MapEnvProvider())
-		// el Engine lee el fuente dos veces, por eso recibe como abrirlo y no un Reader
-		val result =
-			engine.format({ StringReader(request.content) }, version) { tokens ->
-				Formatter(rules).format(tokens, formatted)
-			}
-		return when (result) {
-			is FormatResult.Success -> FormatResponse(formatted.toString(), emptyList())
-			is FormatResult.Failure -> FormatResponse(null, listOf(result.toErrorDetail()))
-		}
-	}
+    fun format(request: FormatRequest): FormatResponse {
+        val version = LanguageVersion.parse(request.version)
+        val rules = request.rules?.let { FormatterRulesLoader.fromJson(it.toString()) } ?: FormatterRules()
+        val formatted = StringWriter()
+        val engine = Engine(DiscardOutput, QueueInput(), MapEnvProvider())
+        // el Engine lee el fuente dos veces, por eso recibe como abrirlo y no un Reader
+        val result =
+            engine.format({ StringReader(request.content) }, version) { tokens ->
+                Formatter(rules).format(tokens, formatted)
+            }
+        return when (result) {
+            is FormatResult.Success -> FormatResponse(formatted.toString(), emptyList())
+            is FormatResult.Failure -> FormatResponse(null, listOf(result.toErrorDetail()))
+        }
+    }
 }
