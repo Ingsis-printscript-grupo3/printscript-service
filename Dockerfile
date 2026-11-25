@@ -27,4 +27,12 @@ USER printscript
 COPY --from=build /app/build/libs/*.jar app.jar
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+
+# Docker (y despues Swarm) sabe si el servicio esta sano, no solo si el proceso corre: el update_config
+# del stack espera a que el contenedor nuevo este healthy antes de bajar el viejo. curl ya viene en la
+# imagen base. El start-period le da tiempo a Spring a arrancar
+HEALTHCHECK --interval=10s --timeout=3s --start-period=40s --retries=3 \
+    CMD curl -fsS http://localhost:8080/actuator/health || exit 1
+
+# sin esto la JVM usa solo el 25% de la memoria que le da el contenedor
+ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-jar", "/app/app.jar"]
