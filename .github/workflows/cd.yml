@@ -47,3 +47,23 @@ jobs:
             GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
           # la provenance guardaria los build-args, token incluido, junto a la imagen
           provenance: false
+
+  deploy:
+    needs: publish
+    # el stack hoy solo existe en la VM de dev
+    if: github.ref_name == 'dev'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Preparar la clave de deploy
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VM_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+      # con el sha y no con el tag de la rama: despliega exactamente este commit. Y toca un
+      # solo servicio del stack, en vez de volver a mandar el archivo entero
+      - name: Actualizar este servicio en el Swarm
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key \
+            ${{ secrets.VM_USER }}@${{ secrets.VM_DEV_HOST }} \
+            "docker service update --image ${{ env.IMAGE }}:${{ github.sha }} snippet-searcher_printscript-service"
