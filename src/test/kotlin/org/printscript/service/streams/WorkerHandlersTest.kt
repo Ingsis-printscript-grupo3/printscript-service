@@ -55,6 +55,29 @@ class WorkerHandlersTest {
     }
 
     @Test
+    fun `lint worker with empty rules disables all lint rules`() {
+        val producer = FakeProducer()
+        val handler = LintWorkerHandler(LintingService(), producer, objectMapper)
+        val msg =
+            LintRequestMessage(
+                jobId = UUID.randomUUID(),
+                userId = "u1",
+                snippetId = UUID.randomUUID(),
+                snippetVersion = Instant.now(),
+                language = "printscript",
+                version = "1.0",
+                content = "let my_var: number = 1;\nprintln(1 + 2);",
+                rules = emptyMap(),
+            )
+
+        handler.handle(objectMapper.writeValueAsString(msg))
+
+        val lintRes = producer.published.single().second as LintResultMessage
+        assertTrue(lintRes.warnings.isEmpty())
+        assertTrue(lintRes.errors.isEmpty())
+    }
+
+    @Test
     fun `format worker publishes formatted content`() {
         val producer = FakeProducer()
         val handler = FormatWorkerHandler(FormattingService(), producer, objectMapper)

@@ -90,5 +90,5 @@ private fun resolveStatus(
         else -> "FAILED"
     }
 
-private fun Map<String, Any?>.toObjectNode(objectMapper: ObjectMapper): ObjectNode? =
-    if (isEmpty()) null else objectMapper.valueToTree(this)
+private fun Map<String, Any?>.toObjectNode(objectMapper: ObjectMapper): ObjectNode =
+    if (isEmpty()) objectMapper.createObjectNode() else objectMapper.valueToTree(this)
