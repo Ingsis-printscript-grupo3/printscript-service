@@ -32,6 +32,7 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webmvc")
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
     // GET /actuator/health: lo usa el compose para saber si el servicio esta arriba
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
