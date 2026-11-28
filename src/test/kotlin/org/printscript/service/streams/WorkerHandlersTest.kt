@@ -77,6 +77,29 @@ class WorkerHandlersTest {
         assertTrue(lintRes.errors.isEmpty())
     }
 
+    // un mensaje sin el campo rules no puede apagar el linteo sin avisar: corren las predeterminadas,
+    // como en POST /lintings
+    @Test
+    fun `lint worker without rules runs the default rules`() {
+        val producer = FakeProducer()
+        val handler = LintWorkerHandler(LintingService(), producer, objectMapper)
+        // un mapa y no un LintRequestMessage: asi el campo rules directamente no viaja
+        val payload =
+            mapOf(
+                "userId" to "u1",
+                "snippetId" to UUID.randomUUID(),
+                "snippetVersion" to Instant.now(),
+                "language" to "printscript",
+                "version" to "1.0",
+                "content" to "let my_var: number = 1;\nprintln(1);",
+            )
+
+        handler.handle(objectMapper.writeValueAsString(payload))
+
+        val lintRes = producer.published.single().second as LintResultMessage
+        assertEquals(1, lintRes.warnings.size)
+    }
+
     @Test
     fun `format worker publishes formatted content`() {
         val producer = FakeProducer()

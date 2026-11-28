@@ -22,7 +22,7 @@ class LintWorkerHandler(
 
     override fun handle(payload: String) {
         val msg = objectMapper.readValue(payload, LintRequestMessage::class.java)
-        val rulesNode = msg.rules.toObjectNode(objectMapper)
+        val rulesNode = msg.rules?.toObjectNode(objectMapper)
         val res = linting.lint(LintRequest(msg.language, msg.version, msg.content, rulesNode))
         producer.publish(
             StreamNames.LINT_RESULTS,
@@ -43,7 +43,7 @@ class FormatWorkerHandler(
 
     override fun handle(payload: String) {
         val msg = objectMapper.readValue(payload, FormatRequestMessage::class.java)
-        val rulesNode = msg.rules.toObjectNode(objectMapper)
+        val rulesNode = msg.rules?.toObjectNode(objectMapper)
         val res = formatting.format(FormatRequest(msg.language, msg.version, msg.content, rulesNode))
         producer.publish(
             StreamNames.FORMAT_RESULTS,

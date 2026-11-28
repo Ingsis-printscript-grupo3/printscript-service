@@ -13,7 +13,8 @@ data class LintRequestMessage(
     val language: String,
     val version: String,
     val content: String,
-    val rules: Map<String, Any?> = emptyMap(),
+    // igual que en POST /lintings: sin rules corren las predeterminadas, y {} es ninguna regla
+    val rules: Map<String, Any?>? = null,
 )
 
 data class LintResultMessage(
@@ -32,7 +33,8 @@ data class FormatRequestMessage(
     val language: String,
     val version: String,
     val content: String,
-    val rules: Map<String, Any?> = emptyMap(),
+    // igual que en POST /formattings: sin rules corren las predeterminadas, y {} es ninguna regla
+    val rules: Map<String, Any?>? = null,
 )
 
 data class FormatResultMessage(
